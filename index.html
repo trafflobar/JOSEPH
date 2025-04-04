@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bot Prédicteur Aviator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Share Tech Mono', monospace; }
+    body {
+      background: #000;
+      color: #00ff00;
+      padding: 20px;
+      overflow: hidden;
+    }
+    .background {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+      background: radial-gradient(ellipse at center, rgba(0,255,0,0.1) 0%, rgba(0,0,0,1) 70%);
+      animation: pulse 5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.2); }
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      text-align: center;
+      padding-bottom: 100px;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    p {
+      margin: 10px 0;
+      line-height: 1.5;
+    }
+    .signal-box {
+      background-color: rgba(0, 255, 0, 0.1);
+      padding: 15px;
+      border-radius: 10px;
+      margin: 20px 0;
+      border: 1px solid #00ff00;
+    }
+    .signal-box span {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 15px;
+      font-size: 1rem;
+      font-weight: bold;
+      border: 2px solid #00ff00;
+      border-radius: 10px;
+      background-color: transparent;
+      color: #00ff00;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .btn:hover {
+      background-color: #00ff00;
+      color: black;
+    }
+    #loadingText {
+      margin-top: 10px;
+      color: #00ff00;
+      font-style: italic;
+      height: 20px;
+    }
+    .btn-fixed {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 20px;
+      background-color: black;
+      z-index: 10;
+    }
+    .btn-cta {
+      background-color: #00ff00;
+      color: black;
+      font-size: 1.3rem;
+      animation: blink 1s infinite;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.95);
+      color: #00ff00;
+      padding: 30px;
+      text-align: center;
+      z-index: 999;
+    }
+    .modal h2 {
+      margin-bottom: 20px;
+      font-size: 1.4rem;
+    }
+    .modal p {
+      margin-bottom: 20px;
+    }
+    .modal .btn {
+      background-color: #00ff00;
+      color: black;
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="background"></div>
+  <div class="container">
+    <h1>Bot Prédicteur Aviator</h1>
+    <p>Bienvenue ! Je suis <strong>Joseph</strong>, ton expert personnel en signaux. Je t'aide à gagner sur Aviator en prédisant les meilleurs moments pour encaisser !</p>
+
+    <div class="signal-box" id="signalBox">
+      Prochain signal : <span id="signalValue">🟢 x2.30</span><br />
+      Statut : <span>Sécurisé pour jouer !</span>
+    </div>
+
+    <div id="loadingText"></div>
+
+    <button class="btn" onclick="window.open('https://t.me/kameroonfather_bot', '_blank')">💬 Contacter Joseph</button>
+    <button class="btn" onclick="window.open('https://affpa.top/L?tag=d_2861313m_97c_&site=2861313&ad=97&r=registration', '_blank')">🎮 Jouer sur Aviator</button>
+  </div>
+
+  <div class="testimonials" style="margin: 50px auto 20px; max-width: 500px; text-align: center; border-top: 1px dashed #00ff00; padding-top: 20px;">
+    <h2 style="color: #00ff00; margin-bottom: 15px;">💬 Témoignages des joueurs</h2>
+    <p><strong>Issa d’Abidjan :</strong><br>"Grâce aux signaux de Joseph, j’ai gagné <strong>45 000 XOF</strong> en une soirée ! Incroyable !"</p>
+    <p><strong>Fatou de Bouaké :</strong><br>"Je n’y croyais pas au début... maintenant j’ai gagné <strong>28 500 XOF</strong>. Merci Joseph !"</p>
+    <p><strong>Yao de Yamoussoukro :</strong><br>"Le bot m’a aidé à retirer plus de <strong>52 000 XOF</strong>. Je l’ai utilisé pendant 3 jours d’affilée !"</p>
+    <p><strong>Awa de San Pedro :</strong><br>"Seulement 2 signaux et j’ai déjà gagné <strong>31 200 XOF</strong>. Trop efficace !"</p>
+  </div>
+
+  <div class="btn-fixed">
+    <button class="btn btn-cta" onclick="generateSignal()">📡 Obtenir un signal (<span id="signalCounter">3</span> restants)</button>
+  </div>
+
+  <div class="modal" id="paywall">
+    <h2>Accès restreint</h2>
+    <p>Pour débloquer complètement le bot, veuillez vous inscrire sur le site 1xBET via le lien ci-dessous.<br>Si vous avez déjà un ancien compte — vous devez en créer un nouveau.<br><br>Effectuez un dépôt d’au moins <strong>1000 XOF</strong>.<br><br>Code promo à l'inscription : <strong>LLF89</strong></p>
+    <button class="btn" onclick="window.open('https://affpa.top/L?tag=d_2861313m_97c_&site=2861313&ad=97&r=registration', '_blank')">✅ S’inscrire maintenant</button>
+  </div>
+
+  <script>
+    let signalCount = 0;
+
+    function generateSignal() {
+      if (signalCount >= 3) {
+        document.getElementById('paywall').style.display = 'block';
+        return;
+      }
+
+      signalCount++;
+      document.getElementById('signalCounter').innerText = 3 - signalCount;
+
+      const loadingEl = document.getElementById('loadingText');
+      const signalValueEl = document.getElementById('signalValue');
+      loadingEl.innerText = 'Analyse en cours...';
+      signalValueEl.innerText = '🟢 ...';
+
+      setTimeout(() => {
+        const rand = Math.random();
+        let value;
+        if (rand <= 0.8) {
+          value = (Math.random() * (3.3 - 1.1) + 1.1).toFixed(2);
+        } else {
+          value = (Math.random() * (100 - 3.4) + 3.4).toFixed(2);
+        }
+        signalValueEl.innerText = `🟢 x${value}`;
+        loadingEl.innerText = '';
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
